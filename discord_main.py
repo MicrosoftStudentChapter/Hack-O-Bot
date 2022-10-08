@@ -25,7 +25,7 @@ async def invite(ctx):
                     f"Server\n\nhttps://discord.com/api/oauth2/authorize?client_id=1028024794081394688&permissions"
                     f"=172942961728&scope=bot")
 
-@client.command(help='Ping the bot!')
+@client.command(help='Ping the bot \n And get the latency')
 async def ping(ctx):
 	await ctx.channel.send(embed=discord.Embed(title="Pong!", description=f"Latency: {round(client.latency * 1000)}ms", color=discord.Color.blue()))
 
