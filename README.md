@@ -24,7 +24,7 @@ pip install -r requirements.txt
 ## Usage
 To run the bot, use the following command:
 ```bash
-python discordmain.py
+python discord_main.py
 ```
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
