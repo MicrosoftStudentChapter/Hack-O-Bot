@@ -3,6 +3,8 @@ import os
 from dotenv import load_dotenv
 from discord.ext import commands
 
+from help import CustomHelpCommand
+
 load_dotenv()
 
 intents = discord.Intents.default()
@@ -10,6 +12,7 @@ intents.members = True
 intents.message_content = True
 client = commands.Bot(command_prefix=".", intents=intents, case_insensitive=True, )
 
+client.help_command = CustomHelpCommand()
 
 @client.event
 async def on_ready():
@@ -22,7 +25,7 @@ async def invite(ctx):
                     f"Server\n\nhttps://discord.com/api/oauth2/authorize?client_id=1028024794081394688&permissions"
                     f"=172942961728&scope=bot")
 
-@client.command()
+@client.command(help='Ping the bot!')
 async def ping(ctx):
 	await ctx.channel.send(embed=discord.Embed(title="Pong!", description=f"Latency: {round(client.latency * 1000)}ms", color=discord.Color.blue()))
 
