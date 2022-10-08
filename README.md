@@ -2,8 +2,9 @@
 
 ## Table of Contents
 [Introduction](#introduction)
+[Features](#features)
 [Installation](#installation)
-[Usage](#usage)
+[Running the Bot Locally](#running-the-bot-locally)
 [Contributing](#contributing)
 [License](#license)
 
@@ -18,13 +19,31 @@ Make sure to put admin role requirements in the code, so that only admins can us
 Write descriptive `help` fields for the commands, so that the user knows what the command does.
 ## Installation
 Install all the dependencies using the following command:
-```bash
+```console
 pip install -r requirements.txt
 ```
-## Usage
-To run the bot, use the following command:
-```bash
-python discord_main.py
+## Running the Bot Locally
+### Locally
+First, you will need at least [`Python 3.8`](https://www.python.org/downloads/release/python-376/).
+
+Clone the repo:
+
+```console
+$ git clone https://github.com/MicrosoftStudentChapter/Hack-O-Bot
+$ cd Hack-O-Bot
+```
+
+Install dependencies:
+
+```console
+$ pip install -r requirements.txt
+```
+Rename the `.env.example` to `.env` and fill out the fields. If `.env.example` is nonexistent (hidden), create a text file named `.env` and copy the contents of [`.env.example`](https://raw.githubusercontent.com/kyb3r/modmail/master/.env.example) then modify the values.
+
+Finally, start the bot.
+
+```console
+$ python discord_main.py
 ```
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
