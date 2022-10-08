@@ -2,8 +2,9 @@
 
 ## Table of Contents
 [Introduction](#introduction)
+[Features](#features)
 [Installation](#installation)
-[Usage](#usage)
+[Running the Bot Locally](#running-the-bot-locally)
 [Contributing](#contributing)
 [License](#license)
 
