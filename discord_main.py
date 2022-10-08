@@ -14,9 +14,9 @@ client = commands.Bot(command_prefix=".", intents=intents, case_insensitive=True
 
 @client.event
 async def on_guild_join(guild):
-    general = find(lambda x: x.name == 'general',  guild.text_channels)
+    general = find(lambda x: ('general' in x.name.lower()),  guild.text_channels)
     if general and general.permissions_for(guild.me).send_messages:
-        await general.send('Hello {}!'.format(guild.name))
+        await general.send(embed=discord.Embed(print(f"Hello {guild.name}!")))
 
 @client.event
 async def on_ready():
