@@ -12,9 +12,9 @@ class CustomHelpCommand(commands.HelpCommand):
         cogs = self.context.bot.cogs.values()
 
         embed = discord.Embed(title="Help", description="", color=discord.Color.blue())
-        embed.add_field(name="Available Commands \u200b", value=" ".join(["**Category: " + cog.qualified_name + "** \n``` " + "`````` ".join([command.name for command in cog.get_commands()]) + "```" for cog in cogs]), inline=False)
+        embed.add_field(name="Available Commands \u200b", value="\n".join(["**Category: " + cog.qualified_name + "** \n```diff\n " + "``````diff\n ".join([command.name for command in cog.get_commands()]) + "```" for cog in cogs]), inline=False)
 
-        embed.add_field(name="Other Commands", value="``` " + "`````` ".join([command.name for command in filtered if command.cog_name is None]) + "```", inline=False)
+        embed.add_field(name="Other Commands", value="```diff\n " + "``````diff\n ".join([command.name for command in filtered if command.cog_name is None]) + "```", inline=False)
 
         embed.set_footer(text=f"Type '.help <Command/Category>' for more information | [Optional arg], <Required arg>")
         embed.timestamp = datetime.now()
@@ -30,7 +30,7 @@ class CustomHelpCommand(commands.HelpCommand):
         else:
             call = self.context.bot.command_prefix + command.name
 
-        embed = discord.Embed(title=f"Command: {command.name.capitalize()}", description=command.help + f"``` {call} {command.signature}```", color=discord.Color.blue())
+        embed = discord.Embed(title=f"Command: {command.name.capitalize()}", description=command.help + f"```diff\n {call} {command.signature}```", color=discord.Color.blue())
 
         embed.set_footer(text=f"Type '.help <Command/Category>' for more information | [Optional arg], <Required arg>")
         embed.timestamp = datetime.now()
@@ -43,7 +43,7 @@ class CustomHelpCommand(commands.HelpCommand):
         filtered = await self.filter_commands(cog.get_commands(), sort=True)
 
         embed = discord.Embed(title=f"Category: {cog.qualified_name.capitalize()}", description="", color=discord.Color.blue())
-        embed.add_field(name="Available Commands", value="``` " + " `````` ".join([command.name for command in filtered]) + " ```", inline=False)
+        embed.add_field(name="Available Commands", value="```diff\n " + " ``````diff\n ".join([command.name for command in filtered]) + " ```", inline=False)
         
         embed.set_footer(text=f"Type '.help <Command/Category>' for more information | [Optional arg], <Required arg>")
         embed.timestamp = datetime.now()
