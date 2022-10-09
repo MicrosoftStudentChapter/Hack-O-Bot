@@ -1,6 +1,6 @@
 from discord.ext import commands
 import discord
-from datetime import date
+from datetime import datetime
 
 class CustomHelpCommand(commands.HelpCommand):
 
@@ -8,23 +8,32 @@ class CustomHelpCommand(commands.HelpCommand):
 
         """This is triggered when .help is invoked."""
         filtered = await self.filter_commands(self.context.bot.commands, sort=True)
-        cogs = [cog for cog in self.context.bot.cogs.values()]
 
-        embed  = discord.Embed(title="Help", description="", color=discord.Color.blue())
-        embed.add_field(name="Available Commands", value="``` " + " `````` ".join([command.name for command in filtered]) + " ```", inline=False)
+        cogs = self.context.bot.cogs.values()
 
-        if cogs:
-            embed.add_field(name="Available Categories", value="` " + " `, ` ".join([cog.qualified_name for cog in cogs]) + " `", inline=False)
+        embed = discord.Embed(title="Help", description="", color=discord.Color.blue())
+        embed.add_field(name="Available Commands \u200b", value=" ".join(["**Category: " + cog.qualified_name + "** \n``` " + "`````` ".join([command.name for command in cog.get_commands()]) + "```" for cog in cogs]), inline=False)
 
-        embed.set_footer(text=f"Type '.help <Command/Category>' for more information | [Optional arg], <Required arg> • {date.today().strftime('%d/%m/%Y')}")
+        embed.add_field(name="Other Commands", value="``` " + "`````` ".join([command.name for command in filtered if command.cog_name is None]) + "```", inline=False)
+
+        embed.set_footer(text=f"Type '.help <Command/Category>' for more information | [Optional arg], <Required arg>")
+        embed.timestamp = datetime.now()
+
         await self.context.send(embed=embed)
 
     async def send_command_help(self, command):
 
         """This is triggered when .help <command> is invoked."""
-        embed = discord.Embed(title=f"Command: {command.name.capitalize()}", description=command.help + f"```.{command.name}```", color=discord.Color.blue())
+        alaises = command.aliases
+        if alaises:
+            call = self.context.bot.command_prefix + command.name + " | " + "| ".join([self.context.bot.command_prefix + alias for alias in alaises])
+        else:
+            call = self.context.bot.command_prefix + command.name
 
-        embed.set_footer(text=f"Type '.help <Command/Category>' for more information | [Optional arg], <Required arg> • {date.today().strftime('%d/%m/%Y')}")
+        embed = discord.Embed(title=f"Command: {command.name.capitalize()}", description=command.help + f"``` {call} {command.signature}```", color=discord.Color.blue())
+
+        embed.set_footer(text=f"Type '.help <Command/Category>' for more information | [Optional arg], <Required arg>")
+        embed.timestamp = datetime.now()
 
         await self.context.send(embed=embed)
 
@@ -36,6 +45,7 @@ class CustomHelpCommand(commands.HelpCommand):
         embed = discord.Embed(title=f"Category: {cog.qualified_name.capitalize()}", description="", color=discord.Color.blue())
         embed.add_field(name="Available Commands", value="``` " + " `````` ".join([command.name for command in filtered]) + " ```", inline=False)
         
-        embed.set_footer(text=f"Type '.help <Command/Category>' for more information | [Optional arg], <Required arg> • {date.today().strftime('%d/%m/%Y')}")
+        embed.set_footer(text=f"Type '.help <Command/Category>' for more information | [Optional arg], <Required arg>")
+        embed.timestamp = datetime.now()
 
         await self.context.send(embed=embed)
