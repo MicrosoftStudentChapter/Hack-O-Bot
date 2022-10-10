@@ -1,3 +1,5 @@
+import asyncio
+
 import discord
 from discord.ext import commands
 import random
@@ -35,6 +37,19 @@ class Fun(commands.Cog):
                                            description=f'Question: {question}\nAnswer: {random.choice(responses)}',
                                            colour=discord.Colour.blurple()))
 
+    @commands.command(help='Roll a `n` sided die')
+    async def roll(self, ctx, sides: int = 6):
+        message = await ctx.send(
+            embed=discord.Embed(title="Rolling...", description="Rolling a die...", colour=discord.Colour.blurple()))
+        await asyncio.sleep(1)
+        await message.edit(
+            embed=discord.Embed(title="Rolling...", description=f"You rolled a {random.randint(1, sides)}",
+                                colour=discord.Colour.blurple()))
 
+    @commands.command(help='Emoji-fy your text')
+    async def emoji(self, ctx, *, text):
+        await ctx.send(embed=discord.Embed(title="Emoji-fied Text",
+                                           description=f"{' '.join([f':regional_indicator_{char.lower()}:' for char in text if char.isalpha()])}",
+                                           colour=discord.Colour.blurple()))
 async def setup(client):
     await client.add_cog(Fun(client))
