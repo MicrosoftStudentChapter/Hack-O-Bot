@@ -61,6 +61,27 @@ class Moderation(commands.Cog):
                                            description=f'{member.mention} has been timed out for **{time}**',
                                            colour=discord.Colour.blurple()))
 
+    @commands.command(aliases=['roleadd'], help="Gives specified roles to the provided members.")
+    @commands.has_permissions(manage_roles=True)
+    async def addrole(self, ctx: commands.Context, role: discord.Role, *members: discord.Member) -> None:
+        if members == tuple():
+            raise commands.MissingRequiredArgument(
+                self.addrole.params["members"])
+
+        if not ctx.guild.me.guild_permissions.manage_roles:
+            await ctx.send(embed=discord.Embed(
+                           description=f"Bot doesn\'t have the permission to give roles.",
+                           colour=discord.Colour.blurple()))
+            return
+
+        success = 0
+        for member in members:
+            await member.add_roles(role)
+            success += 1
+        await ctx.send(embed=discord.Embed(title="Member Roles",
+                                           description=f'Successfully added the role {role.mention} to {success} members.',
+                                           colour=discord.Colour.blurple()))
+
 
 async def setup(client):
     await client.add_cog(Moderation(client))
