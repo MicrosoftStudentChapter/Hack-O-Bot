@@ -65,7 +65,7 @@ class Fun(commands.Cog):
                                            colour=discord.Colour.blurple()))
 
 
-    @commands.command(help='', name='horoscope')
+    @commands.command(name='horoscope', help='Get your horoscope for today based on your *discord birthday*')
     async def horoscope(self, ctx):
         dob = ctx.message.author.created_at
         date = dob.day
@@ -80,7 +80,7 @@ class Fun(commands.Cog):
         content = requests.post('https://aztro.sameerkumar.website/', params=params)
         content = content.json()
 
-        embed = discord.Embed(title=f"Horoscope: {zodiac.capitalize()}", description=f"{content['description']}", color=discord.Colour.blue())
+        embed = discord.Embed(title=f"Horoscope: {zodiac.capitalize()}", description=f"{content['description']}", color=discord.Colour.blurple())
         embed.add_field(name="Compatibility", value=f"{content['compatibility']}", inline=True)
         embed.add_field(name="Mood", value=f"{content['mood']}", inline=True)
         embed.add_field(name="Color", value=f"{content['color']}", inline=False)
