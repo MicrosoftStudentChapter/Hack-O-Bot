@@ -66,7 +66,7 @@ class Fun(commands.Cog):
                                                            f"URL: {repo_info['url']}\n",
                                                colour=discord.Colour.blurple()))
         else:
-            raise AttributeError("Github API returned a non-200 status code")
+            raise AttributeError("Github API returned a non-200 status code (returned " + str(response.status_code) + ")")
 
 
 async def setup(client):
