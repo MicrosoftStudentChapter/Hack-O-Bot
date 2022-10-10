@@ -2,6 +2,8 @@ import asyncio
 
 import discord
 from discord.ext import commands
+import requests
+import json
 import random
 
 
@@ -51,5 +53,21 @@ class Fun(commands.Cog):
         await ctx.send(embed=discord.Embed(title="Emoji-fied Text",
                                            description=f"{' '.join([f':regional_indicator_{char.lower()}:' for char in text if char.isalpha()])}",
                                            colour=discord.Colour.blurple()))
+
+    @commands.command(help='Get information about a random Github Repository')
+    async def github(self, ctx):
+        response = requests.get("https://api.github.com/repositories?since=" + str(int(random.random() * 500)))
+        if(response.status_code == 200):
+            json_data = json.loads(response.text)
+            repo_info = json_data[random.randint(0, len(json_data))]
+            print(repo_info)
+            await ctx.send(embed=discord.Embed(title=f"Github Repository: {repo_info['full_name']}",
+                                               description=f"Description: {repo_info['description']}\n"
+                                                           f"URL: {repo_info['url']}\n",
+                                               colour=discord.Colour.blurple()))
+        else:
+            raise AttributeError("Github API returned a non-200 status code")
+
+
 async def setup(client):
     await client.add_cog(Fun(client))
