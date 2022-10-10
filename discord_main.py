@@ -17,13 +17,14 @@ client = commands.Bot(command_prefix=".", intents=intents, case_insensitive=True
 
 client.help_command = CustomHelpCommand()
 
+
 @client.event
 async def on_guild_join(guild):
     general = find(lambda x: ('general' in x.name.lower()), guild.text_channels)
     if general and general.permissions_for(guild.me).send_messages:
         await general.send(embed=discord.Embed(title=f"Hello {guild.name}!",
                                                description="I am a bot that can help you to run fun commands. Type '.help' to get started",
-                                               color=discord.Color.blue()))
+                                               color=discord.Color.blurple()))
 
 
 @client.event
@@ -36,6 +37,7 @@ async def invite(ctx):
     await ctx.reply(f"Only the First 100 can invite to their Personal "
                     f"Server\n\nhttps://discord.com/api/oauth2/authorize?client_id=1028024794081394688&permissions"
                     f"=172942961728&scope=bot")
+
 
 @client.command(help='Get the bot\'s latency')
 async def ping(ctx):
@@ -77,9 +79,37 @@ async def about(ctx):
                                       f'at Thapar Institute.',
                           colour=discord.Colour.blue())
     embed.set_image(
-        url='https://ci6.googleusercontent.com/proxy/C8UxgGwLaoucxBN9rJCYvVOYnYFMjgd6Zy_xbQpuAE9dXa71YudYOwJN7MYZ4azkNQNc49u1d84eyt7Gdw2KQ8MgJJ9PJbHdbW9STiFzoNP-URezcXBKMfn0vd-1g7W5blB0WGFURZAmVbtJynA5sMV1xGcVA70=s0-d-e1-ft#https://res.cloudinary.com/dhoayd4fv/image/upload/v1664731326/MLSC/HacktoberFest_Header_3_xvtpyn.png')
+        url='https://ci6.googleusercontent.com/proxy/C8UxgGwLaoucxBN9rJCYvVOYnYFMjgd6Zy_xbQpuAE9dXa71YudYOwJN7MYZ4azk'
+            'NQNc49u1d84eyt7Gdw2KQ8MgJJ9PJbHdbW9STiFzoNP-URezcXBKMfn0vd-1g7W5blB0WGFURZAmVbtJynA5sMV1xGcVA70=s0-d-e1-f'
+            't#https://res.cloudinary.com/dhoayd4fv/image/upload/v1664731326/MLSC/HacktoberFest_Header_3_xvtpyn.png')
 
     await ctx.send(embed=embed)
+
+
+@client.event
+async def on_command_error(ctx, error):
+    if isinstance(error, commands.CommandNotFound):
+        return
+    elif isinstance(error, commands.MissingRequiredArgument):
+        if len("|".join(ctx.command.aliases)) > 0:
+            base = f'.[{ctx.command.name}|{"|".join(ctx.command.aliases)}]'
+        else:
+            base = f'.[{ctx.command.name}]'
+        error = f'{str(error)}\nCorrect syntax: ```{base} {ctx.command.signature}```'
+    else:
+        if str(error).startswith("Command"):
+            error = str(error)[29:]
+        else:
+            error = str(error)
+    embed = discord.Embed(
+        title="This isn't a 404 but...",
+        description=error,
+        colour=discord.Colour(0xE93316)
+    )
+    embed.set_footer(text=f'For more information try running .help')
+
+    await ctx.message.channel.send(embed=embed)
+
 
 async def load():
     for filename in os.listdir('./cogs'):
