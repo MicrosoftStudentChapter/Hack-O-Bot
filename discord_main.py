@@ -81,6 +81,31 @@ async def about(ctx):
 
     await ctx.send(embed=embed)
 
+
+@client.event
+async def on_command_error(ctx, error):
+    if isinstance(error, commands.CommandNotFound):
+        return
+    elif isinstance(error, commands.MissingRequiredArgument):
+        if len("|".join(ctx.command.aliases)) > 0:
+            base = f'.[{ctx.command.name}|{"|".join(ctx.command.aliases)}]'
+        else:
+            base = f'.[{ctx.command.name}]'
+        error = f'{str(error)}\nCorrect syntax: ```{base} {ctx.command.signature}```'
+    else:
+        if str(error).startswith("Command"):
+            error = str(error)[29:]
+        else:
+            error = str(error)
+    embed = discord.Embed(
+        title="This isn't a 404 but...",
+        description=error,
+        colour=discord.Colour(0xE93316)
+    )
+    embed.set_footer(text=f'For more information try running .help')
+
+    await ctx.message.channel.send(embed=embed)
+
 async def load():
     for filename in os.listdir('./cogs'):
         if filename.endswith('.py'):
