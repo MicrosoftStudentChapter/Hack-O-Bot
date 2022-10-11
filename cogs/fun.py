@@ -125,6 +125,35 @@ class Fun(commands.Cog):
         else:
             raise AttributeError("Github API returned a non-200 status code (returned " + str(response.status_code) + ")")
 
+    @commands.command(help='Send an adorable dog image, optionally with a specified breed')
+    async def dog(self, ctx, *, breed = None):
+        if breed:
+            req = requests.get(f'https://dog.ceo/api/breed/{breed}/images/random')
+            if req.status_code == 404:
+                await ctx.send(embed=discord.Embed(
+                    title='Something went wrong',
+                    description="Are you sure that's the correct breed name?\nMaybe try https://dog.ceo/dog-api/breeds-list",
+                    colour=discord.Colour.red()))
+            else:
+                await ctx.send(embed=discord.Embed(
+                title="Doggo!",
+                colour=discord.Colour.blurple()).set_image(url=req.json()['message']))
+        else:
+            req = requests.get('https://dog.ceo/api/breeds/image/random')
+            await ctx.send(embed=discord.Embed(
+            title="Doggo!",
+            colour=discord.Colour.blurple()).set_image(url=req.json()['message']))
+
+    @commands.command(help='Send a cute cat image, optionally with some text!')
+    async def cat(self, ctx, *, text=None):
+        if text:
+            await ctx.send(embed=discord.Embed(
+            title="Catto!",
+            colour=discord.Colour.blurple()).set_image(url=f'https://cataas.com/cat/says/{text}'))
+        else:
+            await ctx.send(embed=discord.Embed(
+            title="Catto!",
+            colour=discord.Colour.blurple()).set_image(url='https://cataas.com/cat'))
 
 async def setup(client):
     await client.add_cog(Fun(client))
