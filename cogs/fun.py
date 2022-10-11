@@ -121,6 +121,7 @@ class Fun(commands.Cog):
                                                description=f"Description: {repo_info['description']} \n",
                                                url=repo_info['html_url'],
                                                colour=discord.Colour.blurple())
+            await ctx.send(embed=embed)
         else:
             raise AttributeError("Github API returned a non-200 status code (returned " + str(response.status_code) + ")")
 
