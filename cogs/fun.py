@@ -62,7 +62,7 @@ class Fun(commands.Cog):
             repo_info = json_data[random.randint(0, len(json_data))]
             embed=discord.Embed(title=f"Github Repository: {repo_info['full_name']}",
                                                description=f"Description: {repo_info['description']} \n",
-                                               url=repo_info['home_url'],
+                                               url=repo_info['html_url'],
                                                colour=discord.Colour.blurple())
         else:
             raise AttributeError("Github API returned a non-200 status code (returned " + str(response.status_code) + ")")
