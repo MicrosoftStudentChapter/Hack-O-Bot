@@ -1,7 +1,9 @@
 import asyncio
 import messages
 import discord
+import requests
 import os
+from os import environ
 from dotenv import load_dotenv
 from discord.ext import commands
 from discord.utils import find
@@ -85,6 +87,26 @@ async def about(ctx):
 
     await ctx.send(embed=embed)
 
+@client.command(help='Get the info about the contributors', alias=['contributors-info'])
+async def contributors(ctx):
+    URL = "https://api.github.com/repos/MicrosoftStudentChapter/Hack-O-Bot/contributors"
+
+    HEADERS = {
+        "Accept": "application/vnd.github+json",
+        "User-Agent": ""
+    }
+
+    GITHUB_TOKEN = environ.get("GITHUB_TOKEN")
+    if GITHUB_TOKEN:
+        HEADERS["Authorization"] = f"token {GITHUB_TOKEN}"
+    
+    response = requests.get(URL)
+    result = response.json()
+    
+    embed = discord.Embed(title='Contributors',colour=discord.Colour.blue())
+    embed.description = ", ".join([f"[{contributor['login']}]({contributor['html_url']})" for contributor in result])
+    embed.set_thumbnail(url="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png")
+    await ctx.send(embed=embed)
 
 @client.event
 async def on_command_error(ctx, error):
