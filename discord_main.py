@@ -4,6 +4,7 @@ import discord
 import requests
 import os
 from os import environ
+import re
 from dotenv import load_dotenv
 from discord.ext import commands
 from discord.utils import find
@@ -33,6 +34,21 @@ async def on_guild_join(guild):
 async def on_ready():
     print("Hack-O-Bot is ready to roll!")
 
+@client.event
+async def on_message(ctx):
+    if ctx.author.bot:
+        return
+
+    mentionPattern = r"^<@[0-9]*>$"
+    if re.search(mentionPattern, ctx.content) is not None:
+        await ctx.reply(
+            embed=discord.Embed(
+                title="Hi there! Use .help for a full list of commands.",
+                color=discord.Color.blurple(),
+            )
+        )
+
+    await client.process_commands(ctx)
 
 @client.command(help='Invite the bot to your server!')
 async def invite(ctx):
