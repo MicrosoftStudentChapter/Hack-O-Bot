@@ -155,5 +155,12 @@ class Fun(commands.Cog):
             title="Catto!",
             colour=discord.Colour.blurple()).set_image(url='https://cataas.com/cat'))
 
+    @commands.command(help='Send a random duck image!')
+    async def duck(self, ctx, *, void=None):
+        req = requests.get('https://random-d.uk/api/quack')
+        await ctx.send(embed=discord.Embed(
+            title="Ducky!!",
+            colour=discord.Colour.blurple()).set_image(url=req.json()['url']))
+           
 async def setup(client):
     await client.add_cog(Fun(client))
