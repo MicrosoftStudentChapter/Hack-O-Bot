@@ -1,28 +1,30 @@
-from http import client
 import discord
 from discord.ext import commands
-import datetime
-import asyncio
-import random
-
 from PIL import Image
 from io import BytesIO
 
-client = commands.Bot(command_prefix=".")
 
-@client.command()
-async def wanted(ctx, user: discord.Member = None):
-    if user == None:
-        user = ctx.author
+class Photo(commands.Cog):
+    def __init__(self, client):
+        self.client = client
 
-    wanted = Image.open("assets/wanted.png")
-    asset = user.avatar_url_as(size = 128)
-    data = BytesIO(await asset.read())
-    pfp = Image.open(data)
+    @commands.command(help="Make yourself the most wanted person in all of the wild west")
+    async def wanted(self, ctx, user: discord.Member = None):
+        if user is None:
+            user = ctx.author
 
-    pfp = pfp.resize((571,726))
-    wanted.paste(pfp, (327,500))
+        wanted = Image.open("assets/wanted.png")
+        asset = user.avatar
+        data = BytesIO(await asset.read())
+        pfp = Image.open(data)
 
-    wanted.save("wantedProfile.jpg")
-    
-    await ctx.send(file = discord.File("wantedProfile.jpg"))
+        pfp = pfp.resize((571, 726))
+        wanted.paste(pfp, (327, 500))
+
+        wanted.save("assets/wantedProfile.png")
+
+        await ctx.send(file=discord.File("assets/wantedProfile.png"))
+
+
+async def setup(client):
+    await client.add_cog(Photo(client))
