@@ -1,7 +1,10 @@
 import asyncio
 import messages
 import discord
+import requests
 import os
+from os import environ
+from datetime import datetime
 import re
 from dotenv import load_dotenv
 from discord.ext import commands
@@ -101,6 +104,34 @@ async def about(ctx):
 
     await ctx.send(embed=embed)
 
+CACHE = {}
+@client.command(help='Get the info about the contributors', alias=['contributors-info'])
+async def contributors(ctx):
+    URL = "https://api.github.com/repos/MicrosoftStudentChapter/Hack-O-Bot/contributors"
+
+    create_time = ctx.message.created_at.replace(tzinfo=None)
+    cache_time = CACHE.get("time", datetime(
+        create_time.year-1, 12, 31, 0, 0, 0, 0))
+    if (create_time - cache_time).seconds <= 70 and CACHE.get("content", False):
+        result = CACHE["content"]
+    else:
+        response = requests.get(URL)
+        result = response.json()
+        CACHE["content"] = result
+        CACHE["time"] = create_time
+        if not response.ok:
+            embed = discord.Embed(title='Contributors',
+                                  colour=discord.Colour.red())
+            embed.description = f"Error {response.status_code}: {result['message']}"
+            await ctx.send(embed=embed)
+            return
+
+    embed = discord.Embed(title='Contributors', colour=discord.Colour.blue())
+    embed.description = ", ".join(
+        [f"[{contributor['login']}]({contributor['html_url']})" for contributor in result])
+    embed.set_thumbnail(
+        url="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png")
+    await ctx.send(embed=embed)
 
 @client.event
 async def on_command_error(ctx, error):
