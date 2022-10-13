@@ -3,9 +3,13 @@ import messages
 import discord
 import os
 import re
+
 from dotenv import load_dotenv
 from discord.ext import commands
 from discord.utils import find
+
+from random import choice
+from discord import FFmpegPCMAudio
 
 from help import CustomHelpCommand
 
@@ -32,6 +36,7 @@ async def on_guild_join(guild):
 async def on_ready():
     print("Hack-O-Bot is ready to roll!")
 
+
 @client.event
 async def on_message(ctx):
     if ctx.author.bot:
@@ -48,11 +53,29 @@ async def on_message(ctx):
 
     await client.process_commands(ctx)
 
+
 @client.command(help='Invite the bot to your server!')
 async def invite(ctx):
     await ctx.reply(f"Only the First 100 can invite to their Personal "
                     f"Server\n\nhttps://discord.com/api/oauth2/authorize?client_id=1028024794081394688&permissions"
                     f"=172942961728&scope=bot")
+
+
+# FFmpeg is required for this to work
+@client.command(pass_context=True, help='Get the bot to say Hello to you')
+async def sayhello(ctx):
+    if ctx.author.voice:
+        channel = ctx.message.author.voice.channel
+        voice = await channel.conect()
+        file_name = choice(['bb.wav', 'bg.wav', 'm.wav', 'wyd.mp3'])
+        source = FFmpegPCMAudio('resources/hello-' + file_name)
+        player = voice.play(source)
+        await ctx.guild.voice_client.disconnect()
+    else:
+        await ctx.channel.send(embed=discord.Embed(title="Hello there ✨",
+                                                   description="You are not connected to a voice channel,"
+                                                               " connect to a voice channel to hear me out",
+                                                   color=discord.Color.blue()))
 
 
 @client.command(help='Get the bot\'s latency')
