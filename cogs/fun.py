@@ -83,7 +83,6 @@ class Fun(commands.Cog):
         date = dob.day
         month = dob.month
         zodiac = get_zodiac(date, month)
-        # print(date, month, zodiac)
         params = (
             ('sign', zodiac),
             ('day', 'today'),
