@@ -2,7 +2,6 @@ import discord
 import datetime
 import re
 from discord.ext import commands
-
 import messages
 
 TIME_REGEX = re.compile(r"(?:(\d{1,5})([hsmdw]))+?")
@@ -87,14 +86,14 @@ class Moderation(commands.Cog):
         embed = discord.Embed(title="Sever Information",
                             colour=discord.Colour.blurple())
         
-        fields = [("Server Name", ctx.message.guild.name, False),
-                    ("Created at", ctx.guild.created_at.strftime("%d/%m/%Y %H:%M:%S"), False),
-                    ("Members", len(ctx.guild.members), False),
-                    ("Roles", len(ctx.guild.roles), False),
-                    ("Text Channels", len(ctx.guild.text_channels), False),
-                    ("Voice channels", len(ctx.guild.voice_channels), False)]
+        fields = [("Server Name", ctx.message.guild.name, True),
+                    ("Created at", ctx.guild.created_at.strftime("%d/%m/%Y %H:%M:%S"), True),
+                    ("Members", len(ctx.guild.members), True),
+                    ("Roles", len(ctx.guild.roles), True),
+                    ("Text Channels", len(ctx.guild.text_channels), True),
+                    ("Voice channels", len(ctx.guild.voice_channels), True)]
 
-        for name, value, inline fields:
+        for name, value, inline in fields:
             embed.add_field(name=name, value=value, inline=inline)
 
         await ctx.send(embed=embed)    
