@@ -157,6 +157,21 @@ async def on_command_error(ctx, error):
 
     await ctx.message.channel.send(embed=embed)
 
+@client.command()
+async def ChuckJoke(ctx):
+    response = requests.get('https://api.chucknorris.io/jokes/random')
+    await ctx.send(response.json()['value'])
+
+@client.command()
+async def DadJoke(ctx):
+    response = requests.get('https://icanhazdadjoke.com',headers={'Accept':'application/json'})
+    await ctx.send(response.json()['joke'])
+
+@client.command()
+async def ProgrammerJoke(ctx):
+    response = requests.get('https://official-joke-api.appspot.com/jokes/programming/random')
+    response=response.json()[0]
+    await ctx.send(response['setup']+'\n'+response['punchline'])
 
 async def load():
     for filename in os.listdir('./cogs'):
