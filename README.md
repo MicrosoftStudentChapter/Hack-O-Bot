@@ -1,12 +1,16 @@
 # Hack-O-Bot
 
 ## Table of Contents
-[Introduction](#introduction)
-[Features](#features)
-[Installation](#installation)
-[Running the Bot Locally](#running-the-bot-locally)
-[Contributing](#contributing)
-[License](#license)
+- [Hack-O-Bot](#hack-o-bot)
+  - [Table of Contents](#table-of-contents)
+  - [Introduction](#introduction)
+  - [Features](#features)
+  - [Installation](#installation)
+  - [Running the Bot Locally](#running-the-bot-locally)
+    - [Locally](#locally)
+  - [Commands](#commands)
+  - [Contributing](#contributing)
+  - [License](#license)
 
 ## Introduction
 
@@ -45,6 +49,48 @@ Finally, start the bot.
 ```console
 $ python discord_main.py
 ```
+## Commands 
+Here is a list of all the commands that the bot has:
+
+Fun commands
+|Command|Description|
+|:---|:---|
+|`.8ball`|Use the magic 8 ball to get a random answer|
+|`.roll`|Roll a `n` sided die|
+|`.horoscope`|Get your horoscope for today based on your *discord birthday*|
+|`.emoji`|Emoji-fy your text|
+|`.github`|Get information about a random Github Repository|
+|`.dog`|Send an adorable dog image, optionally with a specified breed|
+|`.cat`|Send a cute cat image, optionally with some text!|
+|`.duck`|Send a random duck image!|
+|`.richest`|Get information about the richest person according to the Forbes list|
+
+Moderation commands
+|Command|Description|
+|:---|:---|
+|`.ban`|Ban a user from the server|
+|`.kick`|Kick a user from the server|
+|`.unban`|Unban a user from the server|
+|`.timeout`|Restricts a User from sending messages for some time|
+|`.addrole`|Gives specified roles to the provided members|
+|`.server_info`|Basics information about the server|
+
+Image manipulation commands
+|Command|Description|
+|:---|:---|
+|`.wanted`|Make yourself the most wanted person in all of the wild west|
+
+Utility commands
+|Command|Description|
+|:---|:---|
+|`.ping`|Get the bot's latency|
+|`.help`|Get help with the bot|
+|`.invite`|Get the bot's invite link|
+|`.enable`|Enables Different Categories    Access: Administrator|
+|`.disable`|Disables Different Categories    Access: Administrator|
+|`.about`|Get the info about Hacktoberfest and MLSC's contribution to it|
+|`.contributors`|Get the info about the contributors|
+
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 Pull requests will be on a **first come first serve basis**. Please make sure to update tests as appropriate.
