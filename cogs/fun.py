@@ -181,6 +181,30 @@ class Fun(commands.Cog):
         embed.timestamp = datetime.now()
 
         await ctx.send(embed=embed)
-           
+
+    @commands.command(help='Get A random Chuck Norris Joke')
+    async def ChuckJoke(self,ctx):
+        response = requests.get('https://api.chucknorris.io/jokes/random')
+        random_no = random.randint(1,1000)
+        embed=discord.Embed(title=f"Chuck Norris joke #{random_no}", description=response.json()['value'], colour=discord.Colour.blurple())
+        await ctx.send(embed=embed)
+
+    @commands.command(help='Get A random Dad Joke')
+    async def DadJoke(self,ctx):
+        response = requests.get('https://icanhazdadjoke.com',headers={'Accept':'application/json'})
+        random_no = random.randint(1,1000)
+        embed=discord.Embed(title=f"Dad joke #{random_no}", description=response.json()['joke'], colour=discord.Colour.blurple())
+        await ctx.send(embed=embed)
+
+    @commands.command(help='Get A random Programmer Joke')
+    async def ProgrammerJoke(self,ctx):
+        response = requests.get('https://official-joke-api.appspot.com/jokes/programming/random')
+        response=response.json()[0]
+        random_no = random.randint(1,1000)
+        embed=discord.Embed(title=f"Programmer joke #{random_no}", colour=discord.Colour.blurple())
+        embed.add_field(name="Question:", value=response['setup'], inline=False)
+        embed.add_field(name="Answer:", value=response['punchline'], inline=False)
+        await ctx.send(embed=embed)
+        
 async def setup(client):
     await client.add_cog(Fun(client))
