@@ -7,6 +7,8 @@ import json
 import random
 import requests
 from datetime import datetime
+from gtts import gTTS
+from discord import FFmpegPCMAudio
 
 
 def get_zodiac(date, month):
@@ -181,6 +183,24 @@ class Fun(commands.Cog):
         embed.timestamp = datetime.now()
 
         await ctx.send(embed=embed)
-           
+
+
+    @commands.command(help='Get the bot to say Hello! when you are connected to a voice channel')
+    async def hello(self, ctx):
+        voice_state = ctx.author.voice
+        if voice_state == None:
+            await ctx.send("Join a voice channel to use this command!")
+        else:
+            channel = ctx.author.voice.channel
+            if ctx.guild.voice_client not in  self.client.voice_clients:
+                voice = await channel.connect()
+
+                #Change Path of executable for ffmpeg
+                voice.play(FFmpegPCMAudio("hello.mp3", executable="C:\\ffmpeg\\bin\\ffmpeg"))
+                
+                while voice.is_playing():
+                    await asyncio.sleep(0)
+                await voice.disconnect()   
+                
 async def setup(client):
     await client.add_cog(Fun(client))
