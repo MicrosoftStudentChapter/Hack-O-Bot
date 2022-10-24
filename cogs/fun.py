@@ -181,6 +181,17 @@ class Fun(commands.Cog):
         embed.timestamp = datetime.now()
 
         await ctx.send(embed=embed)
+
+    
+    @commands.command(help='Get the bot to say Hello! when you are connected to a voice channel')
+    async def hello(self, ctx):
+        voice_state = ctx.author.voice
+        if voice_state == None:
+            await ctx.send("Join a voice channel to use this command!")
+        else:
+            channel = ctx.author.voice.channel
+            voice = await channel.connect()
+      
            
 async def setup(client):
     await client.add_cog(Fun(client))
