@@ -9,7 +9,7 @@ import pandas as pd
 class Makeathon(commands.Cog):
     def __init__(self, client):
         self.client = client
-        self.df = pd.read_csv("assets/data.csv")
+        self.df = pd.read_csv("assets/Makeathon5.csv")
         self.email = self.df["Email"]
         self.team_name = self.df["Team Name"]
         self.timezone = tz.gettz('Asia/Kolkata')
@@ -40,7 +40,7 @@ class Makeathon(commands.Cog):
         if team_name in list(self.team_name) and email.lower() in list(self.email):
             #sluggify team name
             team_slug = team_name.replace(" ", "-")
-            # add role, if role doesnt exist, create it
+            # add role, if role doesn't exist, create it
             team_role = discord.utils.get(ctx.guild.roles, name=team_slug)
             if team_role is None:
                 team_role = await ctx.guild.create_role(name=team_slug)
@@ -70,7 +70,10 @@ class Makeathon(commands.Cog):
             # DM user with "You have successfully registered for {team_name} with email {email}"
             await ctx.author.send(f"You have successfully registered for {team_name} with email {email}")
             #send message to logs channel with "User has registered for {team_name} with email {email}"
-            await self.client.get_channel(904798217965826078).send(embed=embed)
+            try:
+                await self.client.get_channel(904798217965826078).send(embed=embed)
+            except AttributeError:
+                pass
             await ctx.author.add_roles(role)
         else:
             raise commands.CommandError("Please enter a valid email ID and/or Team Name")
