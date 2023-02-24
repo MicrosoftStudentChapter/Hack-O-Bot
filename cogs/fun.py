@@ -160,6 +160,51 @@ class Fun(commands.Cog):
         await ctx.send(embed=discord.Embed(
             title="Ducky!!",
             colour=discord.Colour.blurple()).set_image(url=req.json()['url']))
-           
+    
+    @commands.command(help='Get information about the richest person according to the Forbes list')
+    async def richest(self, ctx):
+        req = requests.get('https://forbes400.herokuapp.com/api/forbes400?limit=1')
+        richest = req.json()[0]
+
+        now = datetime.now()
+        age = now.year - datetime.fromtimestamp(int(richest['birthDate'])/1000).year
+
+        embed = discord.Embed(title=f"{richest['personName']}", description=richest['bios'][0], colour=discord.Colour.blurple())
+        embed.add_field(name="Net Worth", value=f"${round(int(richest['estWorthPrev'])/1000, 3)} Bn", inline=True)
+        embed.add_field(name="Age", value=age, inline=True)
+        embed.add_field(name="Source", value=f"{richest['source']}", inline=False)
+        embed.add_field(name="Country", value=f"{richest['countryOfCitizenship']}", inline=True)
+        embed.add_field(name="Industry", value=", ".join(richest['industries']), inline=True)
+
+        embed.set_thumbnail(url=richest['person']['squareImage'])
+        embed.set_footer(text=f"Requested by {ctx.message.author.display_name}")
+        embed.timestamp = datetime.now()
+
+        await ctx.send(embed=embed)
+
+    @commands.command(help='Get A random Chuck Norris Joke')
+    async def ChuckJoke(self,ctx):
+        response = requests.get('https://api.chucknorris.io/jokes/random')
+        random_no = random.randint(1,1000)
+        embed=discord.Embed(title=f"Chuck Norris joke #{random_no}", description=response.json()['value'], colour=discord.Colour.blurple())
+        await ctx.send(embed=embed)
+
+    @commands.command(help='Get A random Dad Joke')
+    async def DadJoke(self,ctx):
+        response = requests.get('https://icanhazdadjoke.com',headers={'Accept':'application/json'})
+        random_no = random.randint(1,1000)
+        embed=discord.Embed(title=f"Dad joke #{random_no}", description=response.json()['joke'], colour=discord.Colour.blurple())
+        await ctx.send(embed=embed)
+
+    @commands.command(help='Get A random Programmer Joke')
+    async def ProgrammerJoke(self,ctx):
+        response = requests.get('https://official-joke-api.appspot.com/jokes/programming/random')
+        response=response.json()[0]
+        random_no = random.randint(1,1000)
+        embed=discord.Embed(title=f"Programmer joke #{random_no}", colour=discord.Colour.blurple())
+        embed.add_field(name="Question:", value=response['setup'], inline=False)
+        embed.add_field(name="Answer:", value=response['punchline'], inline=False)
+        await ctx.send(embed=embed)
+        
 async def setup(client):
     await client.add_cog(Fun(client))
