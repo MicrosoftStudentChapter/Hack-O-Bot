@@ -12,7 +12,7 @@ from discord.utils import find
 
 from help import CustomHelpCommand
 
-load_dotenv()
+load_dotenv('.env')
 
 intents = discord.Intents.default()
 intents.members = True
